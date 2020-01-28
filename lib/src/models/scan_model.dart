@@ -1,25 +1,21 @@
-// To parse this JSON data, do
-//
-//     final welcome = welcomeFromJson(jsonString);
-
-import 'dart:convert';
-
-Welcome welcomeFromJson(String str) => Welcome.fromJson(json.decode(str));
-
-String welcomeToJson(Welcome data) => json.encode(data.toJson());
-
-class Welcome {
+class ScanModel {
     int id;
     String tipo;
     String valor;
 
-    Welcome({
+    ScanModel({
         this.id,
         this.tipo,
         this.valor,
-    });
+    }){
+      if(this.valor.contains('http')) {
+        this.tipo = 'http';
+      } else {
+        this.tipo = 'geo';
+      }
+    }
 
-    factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
+    factory ScanModel.fromJson(Map<String, dynamic> json) => ScanModel(
         id: json["id"],
         tipo: json["tipo"],
         valor: json["valor"],
