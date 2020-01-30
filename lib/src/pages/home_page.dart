@@ -34,24 +34,22 @@ class _HomePageState extends State<HomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         child: Icon( Icons.filter_center_focus ),
-        onPressed: _scanQA,
+        onPressed: () => _scanQA(context),
         backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }
 
-  _scanQA() async {
+  _scanQA(BuildContext context) async {
     // String futureString = '';
-    
-
-    // try {
-    //   futureString = await BarcodeScanner.scan();
-    // } catch (e) {
-    //   futureString = e.toString();
-    // }
-
     // print('Future Strung $futureString');
-    String futureString = 'https://www.indiehackers.com/search';
+    String futureString;
+
+    try {
+      futureString = await BarcodeScanner.scan();
+    } catch (e) {
+      futureString = e.toString();
+    }
 
     if(futureString != null) {
       // print('Tenemos información');
@@ -59,16 +57,16 @@ class _HomePageState extends State<HomePage> {
       scansBloc.agregarScan(scan);
       // DBProvider.db.nuevoScan(scan);
 
-      final scan2 = ScanModel(valor: 'geo:40.3332222,-74.007');
-      scansBloc.agregarScan(scan2);
+      // final scan2 = ScanModel(valor: 'geo:40.3332222,-74.007');
+      // scansBloc.agregarScan(scan2);
 
       // error IOS para esperar que cierre la camara
       if(Platform.isIOS){
         Future.delayed(Duration(milliseconds: 750), (){
-          utils.abrirScan(scan);
+          utils.abrirScan(context, scan);
         });
       } else {
-        utils.abrirScan(scan);
+        utils.abrirScan(context, scan);
       }
 
       
